@@ -69,6 +69,3 @@ We follow Go’s standard style guide. If you are adding new features or changin
 
 Thank you for contributing to Mongorm! Your efforts help improve the project and are greatly appreciated. If you have any questions, feel free to reach out via [GitHub Issues](https://github.com/mmycin/mongorm/issues) or our [discussion page](https://github.com/mmycin/mongorm/discussions).
 
----
-
-Feel free to customize this template to better fit your project’s needs or to include specific guidelines relevant to Mongorm.
