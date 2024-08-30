@@ -1,7 +1,3 @@
-Here’s a README for your `mongorm` project with the requested details:
-
----
-
 # Mongorm
 
 Welcome to **Mongorm** – your new best friend in the MongoDB ORM world, crafted with love and a sprinkle of humor by Tahcin Ul Karim (a.k.a. Mycin), a student at Notre Dame College and a passionate programmer who’s been coding for the past 5 years. Whether you're a Go enthusiast or just someone looking to simplify MongoDB interactions, Mongorm is here to make your life easier. 
