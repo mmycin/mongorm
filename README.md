@@ -184,6 +184,3 @@ Got ideas or found a bug? We’d love to hear from you! Check out our [Contribut
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-Feel free to tweak the README to match your preferences or add more details as needed.
