@@ -15,7 +15,7 @@ func Initialize(config MongoConfig) (*mongo.Client, error) {
 	var err error
 	Client, err = Connect(config.URI)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	Database = Client.Database(config.DBName)
