@@ -11,11 +11,11 @@ var Client *mongo.Client
 var Database *mongo.Database
 
 // Initialize sets up the MongoDB client and database.
-func Initialize(config MongoConfig) (*mongo.Client, error) {
+func Initialize(config MongoConfig) error {
 	var err error
 	Client, err = Connect(config.URI)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	Database = Client.Database(config.DBName)
