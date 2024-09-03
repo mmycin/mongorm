@@ -7,7 +7,7 @@ import (
 )
 
 // Initialize sets up the MongoDB client and database.
-func Initialize(uri, dbName string) (*mongo.Client, error) {
+func Initialize(uri, dbName string) error {
 	config := client.MongoConfig{
 		URI:    uri,
 		DBName: dbName,
