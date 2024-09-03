@@ -19,5 +19,5 @@ func Initialize(config MongoConfig) error {
 	}
 
 	Database = Client.Database(config.DBName)
-	return Client, nil
+	return nil
 }
