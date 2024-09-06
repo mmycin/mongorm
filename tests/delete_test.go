@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/mmycin/mongorm"
@@ -12,7 +11,7 @@ import (
 
 func TestDeleteOne(t *testing.T) {
 	// Initialize MongoDB connection
-	err := mongorm.Initialize("mongodb+srv://Mycin:myc23084.fun@cluster0.yzel00n.mongodb.net/", "test2db")
+	_, err := mongorm.Initialize("mongodb+srv://Mycin:myc23084.fun@cluster0.yzel00n.mongodb.net/", "test2db")
 	utils.HandleError(err)
 
 	// Create a new user for testing
@@ -20,7 +19,7 @@ func TestDeleteOne(t *testing.T) {
 		Name:  "John Doe",
 		Email: "john@example.com",
 	}
-	err = mongorm.CreateOne(context.Background(), "users", &user)
+	err = mongorm.CreateOne("users", &user)
 	utils.HandleError(err)
 
 	// Define the filter to match the user to delete
@@ -28,12 +27,12 @@ func TestDeleteOne(t *testing.T) {
 	filter := bson.M{"_id": userID}
 
 	// Delete the user
-	err = mongorm.DeleteOne(context.Background(), "users", filter)
+	err = mongorm.DeleteOne("users", filter)
 	utils.HandleError(err)
 
 	// Verify the deletion
 	var deletedUser model.User
-	err = mongorm.ReadOne(context.Background(), "users", filter, &deletedUser)
+	err = mongorm.ReadOne("users", filter, &deletedUser)
 	if err == nil {
 		t.Errorf("Expected error when reading deleted user, but got none")
 	} else {

@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/mmycin/mongorm"
@@ -12,7 +11,7 @@ import (
 
 func TestCreateOne(t *testing.T) {
 	// Initialize MongoDB connection
-	err := mongorm.Initialize("url_string", "test2db")
+	_, err := mongorm.Initialize("url_string", "test2db")
 	utils.HandleError(err)
 
 	// Create a new user
@@ -22,12 +21,12 @@ func TestCreateOne(t *testing.T) {
 	}
 
 	// Insert the user into the database
-	err = mongorm.CreateOne(context.Background(), "users", &user)
+	err = mongorm.CreateOne("users", &user)
 	utils.HandleError(err)
 
 	// Verify the creation by reading the user back from the database
 	var createdUser model.User
-	err = mongorm.ReadOne(context.Background(), "users", bson.M{"_id": user.ID}, &createdUser)
+	err = mongorm.ReadOne("users", bson.M{"_id": user.ID}, &createdUser)
 	if err != nil {
 		t.Errorf("Failed to read created user: %v", err)
 		return

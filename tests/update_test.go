@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -13,7 +12,7 @@ import (
 
 func TestUpdateOne(t *testing.T) {
 	// Initialize MongoDB connection
-	err := mongorm.Initialize("url_string", "test2db")
+	_, err := mongorm.Initialize("url_string", "test2db")
 	utils.HandleError(err)
 
 	// Create a new user for testing
@@ -21,7 +20,7 @@ func TestUpdateOne(t *testing.T) {
 		Name:  "John Doe",
 		Email: "john@example.com",
 	}
-	err = mongorm.CreateOne(context.Background(), "users", &user)
+	err = mongorm.CreateOne("users", &user)
 	utils.HandleError(err)
 
 	// Define the filter to match the user to update
@@ -29,15 +28,15 @@ func TestUpdateOne(t *testing.T) {
 	filter := bson.M{"_id": userID}
 
 	// Define the update parameters
-	update := bson.M{"$set": bson.M{"email": "john.updated@example.com"}}
+	update := bson.M{"email": "john.updated@example.com"}
 
 	// Update the user
-	err = mongorm.Update(context.Background(), "users", filter, update)
+	err = mongorm.Update("users", filter, update)
 	utils.HandleError(err)
 
 	// Verify the update
 	var updatedUser model.User
-	err = mongorm.ReadOne(context.Background(), "users", filter, &updatedUser)
+	err = mongorm.ReadOne("users", filter, &updatedUser)
 	utils.HandleError(err)
 
 	if updatedUser.Email != "john.updated@example.com" {

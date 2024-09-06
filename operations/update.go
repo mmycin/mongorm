@@ -10,9 +10,9 @@ import (
 )
 
 // Update modifies an existing document in the specified collection based on the filter and update parameters.
-func Update(ctx context.Context, db *mongo.Database, collectionName string, filter interface{}, update interface{}) error {
+func Update(db *mongo.Database, collectionName string, filter interface{}, update interface{}) error {
 	collection := db.Collection(collectionName)
-
+	updateSet := bson.M{"$set": update}
 	// Check if update is a map (bson.M) and add UpdatedAt field
 	if updateDoc, ok := update.(bson.M); ok {
 		updateDoc["$set"].(bson.M)["updated_at"] = time.Now()
@@ -25,7 +25,7 @@ func Update(ctx context.Context, db *mongo.Database, collectionName string, filt
 		}
 	}
 
-	_, err := collection.UpdateOne(ctx, filter, update)
+	_, err := collection.UpdateOne(context.Background(), filter, updateSet)
 	if err != nil {
 		return fmt.Errorf("failed to update document: %w", err)
 	}

@@ -1,13 +1,13 @@
 package mongorm
 
 import (
-	"context"
 	"github.com/mmycin/mongorm/client"
 	"github.com/mmycin/mongorm/operations"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Initialize sets up the MongoDB client and database.
-func Initialize(uri, dbName string) error {
+// Initialize sets up the MongoDB client and database
+func Initialize(uri, dbName string) (*mongo.Client, error) {
 	config := client.MongoConfig{
 		URI:    uri,
 		DBName: dbName,
@@ -15,34 +15,35 @@ func Initialize(uri, dbName string) error {
 	return client.Initialize(config)
 }
 
+
 // CreateOne inserts a single document.
-func CreateOne(ctx context.Context, collectionName string, doc interface{}) error {
-	return operations.CreateOne(ctx, client.Database, collectionName, doc)
+func CreateOne(collectionName string, doc interface{}) error {
+	return operations.CreateOne(client.Database, collectionName, doc)
 }
 
 // ReadOne retrieves a single document.
-func ReadOne(ctx context.Context, collectionName string, filter interface{}, result interface{}) error {
-	return operations.ReadOne(ctx, client.Database, collectionName, filter, result)
+func ReadOne(collectionName string, filter interface{}, result interface{}) error {
+	return operations.ReadOne(client.Database, collectionName, filter, result)
 }
 
 // ReadAll retrieves multiple documents.
-func ReadAll(ctx context.Context, collectionName string, filter interface{}, results interface{}) error {
-	return operations.ReadAll(ctx, client.Database, collectionName, filter, results)
+func ReadAll(collectionName string, results interface{}) error {
+	return operations.ReadAll(client.Database, collectionName, results)
 }
 
 // Update modifies an existing document.
-func Update(ctx context.Context, collectionName string, filter interface{}, update interface{}) error {
-	return operations.Update(ctx, client.Database, collectionName, filter, update)
+func Update(collectionName string, filter interface{}, update interface{}) error {
+	return operations.Update(client.Database, collectionName, filter, update)
 }
 
 // DeleteOne removes a single document.
-func DeleteOne(ctx context.Context, collectionName string, filter interface{}) error {
-	return operations.DeleteOne(ctx, client.Database, collectionName, filter)
+func DeleteOne( collectionName string, filter interface{}) error {
+	return operations.DeleteOne(client.Database, collectionName, filter)
 }
 
 // DeleteAll removes multiple documents.
-func DeleteAll(ctx context.Context, collectionName string, filter interface{}) error {
-	return operations.DeleteAll(ctx, client.Database, collectionName, filter)
+func DeleteAll(collectionName string, filter interface{}) error {
+	return operations.DeleteAll(client.Database, collectionName, filter)
 }
 
 // HandleError panics if an error is encountered.

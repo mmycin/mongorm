@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"testing"
@@ -14,7 +13,7 @@ import (
 )
 
 func TestReadOne(t *testing.T) {
-	err := mongorm.Initialize("url_string", "test2db")
+	_, err := mongorm.Initialize("url_string", "test2db")
 	utils.HandleError(err)
 
 	// Specify the ObjectID of the user to find
@@ -28,7 +27,7 @@ func TestReadOne(t *testing.T) {
 
 	// Read the user with the specified ID
 	var user model.User
-	err = mongorm.ReadOne(context.Background(), "users", filter, &user)
+	err = mongorm.ReadOne("users", filter, &user)
 	if err != nil {
 		utils.HandleError(err)
 	}

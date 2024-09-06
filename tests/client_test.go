@@ -8,7 +8,7 @@ import (
 )
 
 func TestInitialize(t *testing.T) {
-	err := client.Initialize(client.MongoConfig{
+	_, err := client.Initialize(client.MongoConfig{
 		URI:    "url_string",
 		DBName: "testdb",
 	})

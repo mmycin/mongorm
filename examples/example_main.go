@@ -1,42 +1,36 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"log"
 
 	"github.com/mmycin/mongorm"
 	"github.com/mmycin/mongorm/model"
-	"github.com/mmycin/mongorm/utils"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Notice struct {
+	model.BaseModel `bson:",inline"`
+	Date            string `json:"date"`
+	Title           string `json:"title"`
+	Content         string `json:"content"`
+}
+
 func main() {
-	// Initialize MongoDB connection
-	err := mongorm.Initialize("url_string", "test2db")
-	utils.HandleError(err)
-
-	// Specify the ObjectID of the user to find
-	userID, err := primitive.ObjectIDFromHex("66d1eb345dc13732bd3e6fed")
+	_, err := mongorm.Initialize("uri", "Notice")
 	if err != nil {
-		log.Fatalf("Invalid ObjectID format: %v", err)
+		panic(err)
 	}
+	// var notices []Notice
+	// err = mongorm.ReadAll("notice", &notices)
+	// fmt.Printf("%v", notices)
 
-	// Define the filter to match the specific user by ID
-	filter := bson.M{"_id": userID}
-
-	// Read the user with the specified ID
-	var user model.User
-	err = mongorm.ReadOne(context.Background(), "users", filter, &user)
-	if err != nil {
-		utils.HandleError(err)
+	var notice1 = Notice{
+		Date:    "06/09/2024",
+		Title:   "Test Doc",
+		Content: "A test content",
 	}
-
-	// Print the user details
-	if user.ID.IsZero() {
-		fmt.Println("No user found with the specified ID.")
-	} else {
-		fmt.Printf("ID: %s, Name: %s, Email: %s\n", user.ID.Hex(), user.Name, user.Email)
-	}
+	err = mongorm.CreateOne("notice", notice1)
+	var notice Notice
+	err = mongorm.ReadOne("notice", bson.M{"_id": notice1.ID}, &notice)
+	fmt.Printf("notice: %v\n", notice)
 }
