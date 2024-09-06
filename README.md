@@ -61,7 +61,6 @@ To create a new document, use the `CreateOne` function:
 package main
 
 import (
-    "context"
     "fmt"
 
     "github.com/mmycin/mongorm"
@@ -78,7 +77,7 @@ func main() {
         Email: "john@example.com",
     }
 
-    err = mongorm.CreateOne(context.Background(), "users", &user)
+    err = mongorm.CreateOne("users", &user)
     utils.HandleError(err)
 
     fmt.Printf("User created with ID: %s\n", user.ID.Hex())
@@ -93,7 +92,6 @@ To read all documents or find specific ones, use the `ReadAll` function:
 package main
 
 import (
-    "context"
     "fmt"
 
     "github.com/mmycin/mongorm"
@@ -107,7 +105,7 @@ func main() {
     utils.HandleError(err)
 
     var users []model.User
-    err = mongorm.ReadAll(context.Background(), "users", bson.M{}, &users)
+    err = mongorm.ReadAll("users", &users)
     utils.HandleError(err)
 
     fmt.Println("Users in the collection:")
@@ -139,9 +137,9 @@ func main() {
     utils.HandleError(err)
 
     filter := bson.M{"name": "John Doe"}
-    update := bson.M{"$set": bson.M{"email": "john.doe@example.com"}}
+    update := bson.M{"email": "john.doe@example.com"}
 
-    err = mongorm.Update(context.Background(), "users", filter, update)
+    err = mongorm.Update("users", filter, update)
     utils.HandleError(err)
 
     fmt.Println("User updated successfully!")
@@ -169,7 +167,7 @@ func main() {
     utils.HandleError(err)
 
     filter := bson.M{"name": "John Doe"}
-    err = mongorm.DeleteOne(context.Background(), "users", filter)
+    err = mongorm.DeleteOne("users", filter)
     utils.HandleError(err)
 
     fmt.Println("User deleted successfully!")
