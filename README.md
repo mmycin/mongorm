@@ -45,7 +45,8 @@ import (
 )
 
 func main() {
-    err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
+    // Returns the client object of type `*mongo.Client` and error. If you want, you can handle the client onject if you want or leave it
+    _, err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
     fmt.Println("MongoDB connected successfully!")
 }
