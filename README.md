@@ -88,8 +88,6 @@ func main() {
 
     err = mongorm.CreateOne("users", &user)
     utils.HandleError(err)
-
-    fmt.Printf("User created with ID: %s\n", user.ID.Hex())
 }
 ```
 
@@ -126,7 +124,7 @@ func main() {
 
     fmt.Println("Users in the collection:")
     for _, u := range users {
-        fmt.Printf("ID: %s, Name: %s, Email: %s\n", u.ID.Hex(), u.Name, u.Email)
+        fmt.Printf("Name: %s, Email: %s\n", u.Name, u.Email)
     }
 }
 ```
