@@ -69,13 +69,21 @@ import (
     "github.com/mmycin/mongorm/utils"
 )
 
+type User struct {
+	model.BaseModel `json:"-"`
+	Name            string `json:"name"`
+	Email           string `json:"email"`
+	Phone           string `json:"phone"`
+}
+
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    user := model.User{
+    user := User {
         Name:  "John Doe",
         Email: "john@example.com",
+        Phone: "01234567800"
     }
 
     err = mongorm.CreateOne("users", &user)
