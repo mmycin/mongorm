@@ -109,11 +109,18 @@ import (
     "go.mongodb.org/mongo-driver/bson"
 )
 
+type User struct {
+	model.BaseModel `json:"-"`
+	Name            string `json:"name"`
+	Email           string `json:"email"`
+	Phone           string `json:"phone"`
+}
+
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    var users []model.User
+    var users []User
     err = mongorm.ReadAll("users", &users)
     utils.HandleError(err)
 
