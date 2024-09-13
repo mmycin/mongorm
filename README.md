@@ -104,7 +104,6 @@ import (
     "github.com/mmycin/mongorm"
     "github.com/mmycin/mongorm/model"
     "github.com/mmycin/mongorm/utils"
-    "go.mongodb.org/mongo-driver/bson"
 )
 
 type User struct {
