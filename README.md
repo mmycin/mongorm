@@ -45,7 +45,8 @@ import (
 )
 
 func main() {
-    err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
+    // Returns the client object of type `*mongo.Client` and error. If you want, you can handle the client onject if you want or leave it
+    _, err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
     fmt.Println("MongoDB connected successfully!")
 }
@@ -61,7 +62,6 @@ To create a new document, use the `CreateOne` function:
 package main
 
 import (
-    "context"
     "fmt"
 
     "github.com/mmycin/mongorm"
@@ -69,19 +69,25 @@ import (
     "github.com/mmycin/mongorm/utils"
 )
 
+type User struct {
+	model.BaseModel `json:"-"`
+	Name            string `json:"name"`
+	Email           string `json:"email"`
+	Phone           string `json:"phone"`
+}
+
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    user := model.User{
+    user := User {
         Name:  "John Doe",
         Email: "john@example.com",
+        Phone: "01234567800"
     }
 
-    err = mongorm.CreateOne(context.Background(), "users", &user)
+    err = mongorm.CreateOne("users", &user)
     utils.HandleError(err)
-
-    fmt.Printf("User created with ID: %s\n", user.ID.Hex())
 }
 ```
 
@@ -93,7 +99,6 @@ To read all documents or find specific ones, use the `ReadAll` function:
 package main
 
 import (
-    "context"
     "fmt"
 
     "github.com/mmycin/mongorm"
@@ -102,17 +107,24 @@ import (
     "go.mongodb.org/mongo-driver/bson"
 )
 
+type User struct {
+	model.BaseModel `json:"-"`
+	Name            string `json:"name"`
+	Email           string `json:"email"`
+	Phone           string `json:"phone"`
+}
+
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    var users []model.User
-    err = mongorm.ReadAll(context.Background(), "users", bson.M{}, &users)
+    var users []User
+    err = mongorm.ReadAll("users", &users)
     utils.HandleError(err)
 
     fmt.Println("Users in the collection:")
     for _, u := range users {
-        fmt.Printf("ID: %s, Name: %s, Email: %s\n", u.ID.Hex(), u.Name, u.Email)
+        fmt.Printf("Name: %s, Email: %s\n", u.Name, u.Email)
     }
 }
 ```
@@ -139,9 +151,9 @@ func main() {
     utils.HandleError(err)
 
     filter := bson.M{"name": "John Doe"}
-    update := bson.M{"$set": bson.M{"email": "john.doe@example.com"}}
+    update := bson.M{"email": "john.doe@example.com"}
 
-    err = mongorm.Update(context.Background(), "users", filter, update)
+    err = mongorm.Update("users", filter, update)
     utils.HandleError(err)
 
     fmt.Println("User updated successfully!")
@@ -169,7 +181,7 @@ func main() {
     utils.HandleError(err)
 
     filter := bson.M{"name": "John Doe"}
-    err = mongorm.DeleteOne(context.Background(), "users", filter)
+    err = mongorm.DeleteOne("users", filter)
     utils.HandleError(err)
 
     fmt.Println("User deleted successfully!")
