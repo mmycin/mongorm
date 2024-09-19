@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mmycin/mongorm/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -12,17 +13,14 @@ import (
 // Update modifies an existing document in the specified collection based on the filter and update parameters.
 func Update(db *mongo.Database, collectionName string, filter interface{}, update interface{}) error {
 	collection := db.Collection(collectionName)
-	updateSet := bson.M{"$set": update}
-	// Check if update is a map (bson.M) and add UpdatedAt field
-	if updateDoc, ok := update.(bson.M); ok {
-		updateDoc["$set"].(bson.M)["updated_at"] = time.Now()
+	updateSet := utils.Json{"$set": update}
+
+	// Add UpdatedAt field to the update document
+	if updateDoc, ok := update.(utils.Json); ok {
+		updateDoc["updated_at"] = time.Now()
 	} else if updateDoc, ok := update.(bson.D); ok {
-		for i, elem := range updateDoc {
-			if elem.Key == "$set" {
-				updateDoc[i].Value.(bson.M)["updated_at"] = time.Now()
-				break
-			}
-		}
+		updateDoc = append(updateDoc, bson.E{Key: "updated_at", Value: time.Now()})
+		updateSet["$set"] = updateDoc
 	}
 
 	_, err := collection.UpdateOne(context.Background(), filter, updateSet)
@@ -32,3 +30,4 @@ func Update(db *mongo.Database, collectionName string, filter interface{}, updat
 
 	return nil
 }
+

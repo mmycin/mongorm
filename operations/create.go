@@ -14,9 +14,10 @@ func CreateOne(db *mongo.Database, collectionName string, doc interface{}) error
 	collection := db.Collection(collectionName)
 
 	// Check if doc is a pointer to BaseModel or a value of BaseModel
-	if baseModel, ok := doc.(*model.BaseModel); ok {
+	switch baseModel := doc.(type) {
+	case *model.BaseModel:
 		baseModel.PreSave() // Update timestamps
-	} else if baseModel, ok := doc.(model.BaseModel); ok {
+	case model.BaseModel:
 		// Update timestamps on a copy of the BaseModel
 		baseModel.PreSave()
 		doc = &baseModel // Ensure doc is a pointer to the updated BaseModel
@@ -32,8 +33,8 @@ func CreateOne(db *mongo.Database, collectionName string, doc interface{}) error
 	if baseModel, ok := doc.(*model.BaseModel); ok {
 		if id, ok := result.InsertedID.(primitive.ObjectID); ok {
 			baseModel.ID = id
-		} 
-	} 	
+		}
+	}
 
 	return nil
 }
