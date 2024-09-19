@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+
 // Initialize sets up the MongoDB client and database
 func Initialize(uri, dbName string) (*mongo.Client, error) {
 	config := client.MongoConfig{
