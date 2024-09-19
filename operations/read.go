@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/mmycin/mongorm/utils"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,14 +20,14 @@ func ReadOne(db *mongo.Database, collectionName string, filter interface{}, resu
 	if idSetter, ok := result.(interface{ SetID(id interface{}) }); ok {
 		idSetter.SetID(filter.(utils.Json)["_id"])
 	}
-
+	
 	return nil
 }
 
 func ReadAll(db *mongo.Database, collectionName string, results interface{}) error {
 	collection := db.Collection(collectionName)
 	ctx := context.Background()
-	cursor, err := collection.Find(ctx, bson.M{})
+	cursor, err := collection.Find(ctx, utils.Json{})
 	if err != nil {
 		return fmt.Errorf("failed to find documents: %w", err)
 	}
@@ -43,7 +42,7 @@ func ReadAll(db *mongo.Database, collectionName string, results interface{}) err
 	if idSetter, ok := results.(interface{ SetIDs(ids []interface{}) }); ok {
 		var ids []interface{}
 		for cursor.Next(ctx) {
-			var doc bson.M
+			var doc utils.Json
 			if err := cursor.Decode(&doc); err != nil {
 				return fmt.Errorf("failed to decode document: %w", err)
 			}
