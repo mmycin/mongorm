@@ -104,7 +104,6 @@ import (
     "github.com/mmycin/mongorm"
     "github.com/mmycin/mongorm/model"
     "github.com/mmycin/mongorm/utils"
-    "go.mongodb.org/mongo-driver/bson"
 )
 
 type User struct {
@@ -143,15 +142,14 @@ import (
     "github.com/mmycin/mongorm"
     "github.com/mmycin/mongorm/model"
     "github.com/mmycin/mongorm/utils"
-    "go.mongodb.org/mongo-driver/bson"
 )
 
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    filter := bson.M{"name": "John Doe"}
-    update := bson.M{"email": "john.doe@example.com"}
+    filter := utils.Json{"name": "John Doe"}
+    update := utils.Json{"email": "john.doe@example.com"}
 
     err = mongorm.Update("users", filter, update)
     utils.HandleError(err)
@@ -173,14 +171,13 @@ import (
 
     "github.com/mmycin/mongorm"
     "github.com/mmycin/mongorm/utils"
-    "go.mongodb.org/mongo-driver/bson"
 )
 
 func main() {
     err := mongorm.Initialize("mongodb+srv://username:password@cluster0.mongodb.net/", "testdb")
     utils.HandleError(err)
 
-    filter := bson.M{"name": "John Doe"}
+    filter := utils.Json{"name": "John Doe"}
     err = mongorm.DeleteOne("users", filter)
     utils.HandleError(err)
 
